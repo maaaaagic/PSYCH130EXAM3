@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Study Guide Template</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --accent: #4f46e5;
+      --accent-soft: #eef2ff;
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --max: 1100px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #f8f9ff 0%, #f6f7fb 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .container {
+      width: min(calc(100% - 2rem), var(--max));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(12px);
+      background: rgba(246, 247, 251, 0.86);
+      border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+    }
+
+    .hero {
+      padding: 2.5rem 0 1.5rem;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.05;
+      margin: 0 0 0.6rem;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 850px;
+      margin: 0;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding: 0.9rem 0 1rem;
+    }
+
+    .tab-btn {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      padding: 0.8rem 1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: 0.18s ease;
+    }
+
+    .tab-btn:hover,
+    .tab-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    main {
+      padding: 1.4rem 0 4rem;
+    }
+
+    .panel {
+      display: none;
+      animation: fade 0.2s ease;
+    }
+
+    .panel.active { display: block; }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-intro {
+      margin-bottom: 1rem;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card,
+    .accordion-item,
+    .flashcard,
+    .question,
+    .vignette,
+    .table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card {
+      padding: 1.1rem 1.15rem;
+    }
+
+    .card h3,
+    .table-wrap h3,
+    .question h3,
+    .vignette h3 {
+      margin: 0 0 0.65rem;
+      font-size: 1.05rem;
+    }
+
+    .card p,
+    .question p,
+    .vignette p { margin: 0; }
+
+    .accordion {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .accordion-item { overflow: hidden; }
+
+    .accordion-btn {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      padding: 1rem 1.1rem;
+      font: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .accordion-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .accordion-title strong { font-size: 1.05rem; }
+    .accordion-title span { color: var(--muted); font-size: 0.92rem; }
+
+    .accordion-content {
+      display: none;
+      padding: 0 1.1rem 1.1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .accordion-item.open .accordion-content { display: block; }
+
+    .chip {
+      display: inline-block;
+      background: #f3f4f6;
+      color: #374151;
+      border-radius: 999px;
+      padding: 0.28rem 0.58rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    ul.tight {
+      margin: 0.5rem 0 0;
+      padding-left: 1.1rem;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-top: 0.9rem;
+    }
+
+    .mini-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem;
+      background: #fafafa;
+    }
+
+    .mini-card h4 {
+      margin: 0 0 0.4rem;
+      font-size: 0.96rem;
+    }
+
+    .table-wrap {
+      overflow: hidden;
+      padding: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.85rem;
+      border-top: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      background: #fafbff;
+      font-size: 0.92rem;
+    }
+
+    tr:first-child th,
+    tr:first-child td { border-top: 0; }
+
+    .question,
+    .vignette {
+      padding: 1rem;
+    }
+
+    .options {
+      display: grid;
+      gap: 0.55rem;
+      margin-top: 0.85rem;
+    }
+
+    .option {
+      width: 100%;
+      text-align: left;
+      padding: 0.85rem 0.95rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .option:hover { border-color: var(--accent); }
+    .option.correct { background: var(--success-bg); border-color: #86efac; color: var(--success); }
+    .option.incorrect { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+
+    .feedback {
+      display: none;
+      margin-top: 0.8rem;
+      padding: 0.8rem 0.9rem;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      color: #334155;
+    }
+
+    .flashcard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .flashcard {
+      min-height: 180px;
+      padding: 0;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 180px;
+      transition: transform 0.45s ease;
+      transform-style: preserve-3d;
+    }
+
+    .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+
+    .flash-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-radius: var(--radius);
+    }
+
+    .flash-front {
+      background: white;
+    }
+
+    .flash-back {
+      background: var(--accent);
+      color: white;
+      transform: rotateY(180deg);
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .footer-note {
+      margin-top: 2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 900px) {
+      .grid.two,
+      .grid.three,
+      .flashcard-grid,
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="hero">
+        <div class="eyebrow">Study Guide Template</div>
+        <h1>Your Course Unit Title</h1>
+        <p class="subtitle">This recreates the structure and feel of your classmate’s guide: a clean single-page site with tab navigation, expandable content sections, comparison tables, practice questions, vignettes, and flashcards.</p>
+      </div>
+      <nav class="tabs" aria-label="Study guide sections">
+        <button class="tab-btn active" data-tab="reference">Reference</button>
+        <button class="tab-btn" data-tab="compare">Compare</button>
+        <button class="tab-btn" data-tab="mcq">Multiple Choice</button>
+        <button class="tab-btn" data-tab="vignettes">Vignettes</button>
+        <button class="tab-btn" data-tab="flashcards">Flashcards</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="reference" class="panel active">
+      <h2>Topic Reference</h2>
+      <p class="section-intro">Click any topic to expand the full criteria, major features, risk factors, treatments, or other high-yield notes.</p>
+
+      <div class="accordion">
+        <article class="accordion-item open">
+          <button class="accordion-btn" type="button">
+            <div class="accordion-title">
+              <strong>Topic One</strong>
+              <span>Short subtitle or chapter label</span>
+            </div>
+            <span>▾</span>
+          </button>
+          <div class="accordion-content">
+            <span class="chip">Core Criteria</span>
+            <ul class="tight">
+              <li>Put the key definition or threshold here.</li>
+              <li>Add the most testable criteria or identifying features.</li>
+              <li>Keep each bullet short and scannable.</li>
+            </ul>
+
+            <div class="mini-grid">
+              <div class="mini-card">
+                <h4>Epidemiology / Patterns</h4>
+                <ul class="tight">
+                  <li>Add rates, prevalence, onset, course, or demographic patterns.</li>
+                  <li>Use numbers only when they actually matter for the exam.</li>
+                </ul>
+              </div>
+              <div class="mini-card">
+                <h4>Treatment / Intervention</h4>
+                <ul class="tight">
+                  <li>Add first-line treatment or major treatment categories.</li>
+                  <li>Include the one or two distinctions your professor emphasizes.</li>
+                </ul>
+              </div>
+              <div class="mini-card">
+                <h4>Risk Factors / Causes</h4>
+                <ul class="tight">
+                  <li>Biological</li>
+                  <li>Psychological</li>
+                  <li>Social / environmental</li>
+                </ul>
+              </div>
+              <div class="mini-card">
+                <h4>Differential / Distinctions</h4>
+                <ul class="tight">
+                  <li>Compare with similar diagnoses or concepts.</li>
+                  <li>State the easiest way to tell them apart.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="accordion-item">
+          <button class="accordion-btn" type="button">
+            <div class="accordion-title">
+              <strong>Topic Two</strong>
+              <span>Another unit, diagnosis, theory, or chapter section</span>
+            </div>
+            <span>▾</span>
+          </button>
+          <div class="accordion-content">
+            <span class="chip">High-Yield Notes</span>
+            <ul class="tight">
+              <li>Use this card for your next main section.</li>
+              <li>You can duplicate this whole accordion item whenever needed.</li>
+              <li>That is the main pattern behind the original site.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="accordion-item">
+          <button class="accordion-btn" type="button">
+            <div class="accordion-title">
+              <strong>Topic Three</strong>
+              <span>Add as many as you need</span>
+            </div>
+            <span>▾</span>
+          </button>
+          <div class="accordion-content">
+            <p class="muted">Duplicate topics, then swap in your own course content as you go through the semester.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="compare" class="panel">
+      <h2>Comparison Table</h2>
+      <p class="section-intro">Use this for compare-and-contrast questions, which are often the most helpful for actual studying.</p>
+
+      <div class="table-wrap">
+        <h3>Topic A vs. Topic B vs. Topic C</h3>
+        <table>
+          <tr>
+            <th>Feature</th>
+            <th>Topic A</th>
+            <th>Topic B</th>
+            <th>Topic C</th>
+          </tr>
+          <tr>
+            <td>Core distinction</td>
+            <td>Replace with your notes</td>
+            <td>Replace with your notes</td>
+            <td>Replace with your notes</td>
+          </tr>
+          <tr>
+            <td>Duration / threshold</td>
+            <td>Add the exam-relevant difference</td>
+            <td>Add the exam-relevant difference</td>
+            <td>Add the exam-relevant difference</td>
+          </tr>
+          <tr>
+            <td>Risk factors</td>
+            <td>List the few you truly need</td>
+            <td>List the few you truly need</td>
+            <td>List the few you truly need</td>
+          </tr>
+          <tr>
+            <td>Treatment / outcome</td>
+            <td>Short summary</td>
+            <td>Short summary</td>
+            <td>Short summary</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="mcq" class="panel">
+      <h2>Multiple Choice Practice</h2>
+      <p class="section-intro">Use these for quick retrieval practice. Click an answer to reveal feedback.</p>
+
+      <div class="grid two">
+        <article class="question" data-answer="b">
+          <h3>Question 1</h3>
+          <p>Which feature best distinguishes Topic A from Topic B?</p>
+          <div class="options">
+            <button class="option" data-option="a">A. Distractor answer</button>
+            <button class="option" data-option="b">B. Correct answer</button>
+            <button class="option" data-option="c">C. Distractor answer</button>
+            <button class="option" data-option="d">D. Distractor answer</button>
+          </div>
+          <div class="feedback">Correct answer: <strong>B</strong>. Write one sentence here explaining why that answer is right.</div>
+        </article>
+
+        <article class="question" data-answer="c">
+          <h3>Question 2</h3>
+          <p>Which of the following would your professor be most likely to emphasize?</p>
+          <div class="options">
+            <button class="option" data-option="a">A. Answer choice</button>
+            <button class="option" data-option="b">B. Answer choice</button>
+            <button class="option" data-option="c">C. Correct answer</button>
+            <button class="option" data-option="d">D. Answer choice</button>
+          </div>
+          <div class="feedback">Correct answer: <strong>C</strong>. Use this space for your reminder about the logic behind it.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="vignettes" class="panel">
+      <h2>Case Vignettes</h2>
+      <p class="section-intro">These are especially useful when a class tests diagnosis, application, or concept identification.</p>
+
+      <div class="grid two">
+        <article class="vignette">
+          <h3>Vignette 1</h3>
+          <p>A short case goes here. Include only the details that matter for ruling options in or out.</p>
+          <div class="mini-grid">
+            <div class="mini-card">
+              <h4>Most likely answer</h4>
+              <p>Put the best answer here.</p>
+            </div>
+            <div class="mini-card">
+              <h4>Why</h4>
+              <p>Explain the clue pattern in 2–3 sentences.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="vignette">
+          <h3>Vignette 2</h3>
+          <p>Use this second card for a compare-and-differentiate case.</p>
+          <div class="mini-grid">
+            <div class="mini-card">
+              <h4>Correct concept / diagnosis</h4>
+              <p>Write the answer here.</p>
+            </div>
+            <div class="mini-card">
+              <h4>Why the tempting distractor is wrong</h4>
+              <p>This helps with exam discrimination a lot.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="flashcards" class="panel">
+      <h2>Flashcards</h2>
+      <p class="section-intro">Click a card to flip it.</p>
+
+      <div class="flashcard-grid">
+        <article class="flashcard" tabindex="0">
+          <div class="flashcard-inner">
+            <div class="flash-face flash-front">
+              <strong>Front 1</strong>
+              <p class="muted">Put your term, concept, or question here.</p>
+            </div>
+            <div class="flash-face flash-back">
+              <strong>Back 1</strong>
+              <p>Put the answer or key distinction here.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0">
+          <div class="flashcard-inner">
+            <div class="flash-face flash-front">
+              <strong>Front 2</strong>
+              <p class="muted">Another prompt</p>
+            </div>
+            <div class="flash-face flash-back">
+              <strong>Back 2</strong>
+              <p>Another answer</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0">
+          <div class="flashcard-inner">
+            <div class="flash-face flash-front">
+              <strong>Front 3</strong>
+              <p class="muted">One more card</p>
+            </div>
+            <div class="flash-face flash-back">
+              <strong>Back 3</strong>
+              <p>One more answer</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <p class="footer-note">Tip: the easiest way to keep this manageable is to update only one topic, one comparison, and a few practice items at a time.</p>
+  </main>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.panel');
+
+    tabs.forEach(button => {
+      button.addEventListener('click', () => {
+        tabs.forEach(btn => btn.classList.remove('active'));
+        panels.forEach(panel => panel.classList.remove('active'));
+        button.classList.add('active');
+        document.getElementById(button.dataset.tab).classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.accordion-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        button.closest('.accordion-item').classList.toggle('open');
+      });
+    });
+
+    document.querySelectorAll('.question').forEach(question => {
+      const answer = question.dataset.answer;
+      const feedback = question.querySelector('.feedback');
+      const options = question.querySelectorAll('.option');
+
+      options.forEach(option => {
+        option.addEventListener('click', () => {
+          options.forEach(btn => btn.disabled = true);
+          const selected = option.dataset.option;
+          option.classList.add(selected === answer ? 'correct' : 'incorrect');
+          const correct = question.querySelector(`[data-option="${answer}"]`);
+          if (correct) correct.classList.add('correct');
+          feedback.style.display = 'block';
+        });
+      });
+    });
+
+    document.querySelectorAll('.flashcard').forEach(card => {
+      const toggle = () => card.classList.toggle('flipped');
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          toggle();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

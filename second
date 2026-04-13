@@ -1,0 +1,479 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test 3 Study Guide — Disorder Reference</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --ink: #18212f;
+      --muted: #617086;
+      --line: #dde6f2;
+      --accent: #5c6cff;
+      --accent-2: #8d6bff;
+      --chip: #eef2ff;
+      --shadow: 0 18px 45px rgba(54, 79, 137, 0.12);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(92, 108, 255, .12), transparent 24%),
+        radial-gradient(circle at top right, rgba(141, 107, 255, .10), transparent 20%),
+        linear-gradient(180deg, #f8faff 0%, var(--bg) 100%);
+    }
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+    .hero {
+      background: linear-gradient(135deg, rgba(92,108,255,.96), rgba(141,107,255,.92));
+      color: white;
+      border-radius: 28px;
+      padding: 34px 34px 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -80px auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.09);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      backdrop-filter: blur(4px);
+      font-size: .86rem;
+      letter-spacing: .02em;
+    }
+    h1 {
+      margin: 16px 0 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.04;
+    }
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: rgba(255,255,255,.92);
+      font-size: 1.03rem;
+      line-height: 1.65;
+    }
+    .tabbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0 24px;
+    }
+    .tab {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(31, 41, 55, 0.04);
+      user-select: none;
+    }
+    .tab.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      border-color: transparent;
+    }
+    .panel {
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(221,230,242,.9);
+      backdrop-filter: blur(8px);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+    .section-head h2 {
+      margin: 0 0 8px;
+      font-size: 1.6rem;
+    }
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 760px;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 16px 0 4px;
+    }
+    .control {
+      border: 1px solid var(--line);
+      background: var(--chip);
+      color: #364057;
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .accordion-item {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .accordion-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(31, 41, 55, 0.06);
+    }
+    .accordion-trigger {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      border: 0;
+      background: transparent;
+      padding: 18px 20px;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+    }
+    .item-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+    .item-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(92,108,255,.13), rgba(141,107,255,.16));
+      font-size: 1.2rem;
+      flex: 0 0 auto;
+    }
+    .item-title {
+      display: block;
+      font-weight: 800;
+      font-size: 1.02rem;
+    }
+    .item-subtitle {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .92rem;
+      font-weight: 600;
+    }
+    .chevron {
+      color: var(--muted);
+      font-size: 1.2rem;
+      transition: transform .2s ease;
+    }
+    .accordion-panel {
+      display: none;
+      padding: 0 20px 22px 20px;
+      border-top: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(246,249,255,.6), rgba(255,255,255,1));
+    }
+    .accordion-item.open .accordion-panel { display: block; }
+    .accordion-item.open .chevron { transform: rotate(180deg); }
+    .accordion-panel h3 {
+      margin: 20px 0 10px;
+      font-size: 1rem;
+      color: #24324a;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--line);
+    }
+    .accordion-panel h4 {
+      margin: 14px 0 8px;
+      font-size: .95rem;
+      color: #42506a;
+    }
+    .accordion-panel ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .accordion-panel li {
+      margin: 7px 0;
+      line-height: 1.58;
+      color: #253147;
+    }
+    .footer-note {
+      color: var(--muted);
+      font-size: .93rem;
+      margin-top: 18px;
+      line-height: 1.55;
+    }
+    .ghost {
+      opacity: .7;
+    }
+    @media (max-width: 720px) {
+      .shell { width: min(100% - 18px, 1120px); padding-top: 16px; }
+      .hero { padding: 24px 20px 22px; border-radius: 22px; }
+      .panel { padding: 16px; border-radius: 18px; }
+      .accordion-trigger { padding: 16px; }
+      .accordion-panel { padding: 0 16px 18px; }
+      .section-head { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <span class="eyebrow">📘 PSYCH 130 • Exam 3 Study Guide</span>
+      <h1>Trauma, OCD-Related, and Psychotic Disorders</h1>
+      <p>
+        This page mirrors the layout and feel of the reference site you linked, with the
+        <strong>Disorder Reference</strong> tab rebuilt using the content from your note sheet.
+        Each disorder expands into DSM-5-TR criteria, epidemiology, etiology, treatment, predictors, and differential diagnosis.
+      </p>
+    </section>
+
+    <nav class="tabbar" aria-label="Study guide tabs">
+      <a class="tab active" href="#reference">Reference</a>
+      <span class="tab ghost">❓ Multiple Choice</span>
+      <span class="tab ghost">Case Vignettes</span>
+      <span class="tab ghost">Flashcards</span>
+    </nav>
+
+    <section class="panel" id="reference">
+      <div class="section-head">
+        <div>
+          <h2>Disorder Reference</h2>
+          <p>Click any disorder to expand the full summary. The content below was replaced with material from your attached exam note sheet.</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="control" type="button" id="expandAll">Expand all</button>
+        <button class="control" type="button" id="collapseAll">Collapse all</button>
+      </div>
+
+      <div class="grid">
+        
+    <article class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="item-title-wrap">
+          <span class="item-icon">🧠</span>
+          <span>
+            <span class="item-title">Obsessive-Compulsive Disorder</span>
+            <span class="item-subtitle">Trauma & Stressor / OCD-Related</span>
+          </span>
+        </span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="accordion-panel">
+        <h3>DSM-5-TR Criteria</h3><ul><li>Obsessions and/or compulsions present.</li><li><strong>Obsessions:</strong> recurrent, intrusive, persistent unwanted thoughts, urges, or images.</li><li>Person attempts to ignore, suppress, or neutralize the thoughts.</li><li><strong>Compulsions:</strong> repetitive behaviors or mental acts performed in response to obsessions or rigid rules.</li><li>Behaviors aim to reduce distress or prevent a dreaded event, though they are excessive or unrealistic.</li><li>Time-consuming (&gt;1 hour/day) or cause clinically significant distress or impairment</li><li><strong>Common foci of obsessions:</strong> contamination, responsibility for harm, sex and morality, violence, religion, symmetry or order</li><li><strong>Common compulsive rituals:</strong> decontamination, checking, repeating routine activities, ordering/arranging, mental rituals</li></ul><h3>Epidemiology</h3><ul><li>Lifetime prevalence ~ 1.3%</li><li><strong>Gender:</strong> slightly more common in women</li><li><strong>Age of onset:</strong> childhood or early adolescence.</li><li><strong>Course:</strong> chronic without treatment.</li><li><strong>Comorbidity:</strong> depression, anxiety disorders, substance use disorders.</li><li>~33% show hoarding symptoms; ~75% experience an anxiety disorder at some point.</li></ul><h3>Risk Factors / Etiology</h3><h4>Biological:</h4><ul><li><strong>Heritability:</strong> 0.40–0.50.</li><li><strong>Neurotransmitter:</strong> serotonin implicated.</li><li><strong>Brain circuit:</strong> cortico-striatal-thalamic-cortical (CSTC) loop.</li><li><strong>Key regions:</strong> orbitofrontal cortex, caudate nucleus, anterior cingulate cortex.</li></ul><h4>Psychological:</h4><ul><li><strong>Behavioral model:</strong> compulsions become conditioned habits that persist after threat disappears.</li><li><strong>Cognitive distortions:</strong> thought-action fusion; inflated responsibility for harm; belief that thinking about an event increases its likelihood.</li><li>OCD risk emphasizes harm responsibility and threat misinterpretation.</li></ul><h4>Social / Environmental:</h4><ul><li>Stressful life events may trigger symptom onset.</li><li>Cultural context shapes content of obsessions (e.g., religion).</li></ul><h3>Evidence-Based Treatments</h3><ul><li>Psychotherapy (First-line) – Exposure and Response Prevention (ERP)</li><li>Exposure to feared stimuli.</li><li>Prevention of compulsive ritual.</li><li>Promotes extinction of conditioned anxiety.</li><li>Delivered through hierarchical exposure.</li><li>ERP produces significant improvement in ~69–75% of patients.</li><li><strong>Medication – First line:</strong> SSRIs (fluoxetine, sertraline); Alt: clomipramine (tricyclic antidepressant); SNRIs sometimes used off-label.</li><li><strong>Key:</strong> Stop rituals, face fears, break negative reinforcement</li><li>ERP produces significant improvement in ~69–75% of patients.</li><li>Harmful / Ineffective Approaches  Reassurance seeking or avoidance behaviors (reinforce compulsions).</li></ul><h3>Predictors of Outcomes</h3><h4>Better outcomes associated with:</h4><ul><li>Good insight into irrationality of obsessions/compulsions</li><li>Strong engagement in Exposure and Response Prevention (ERP)</li><li>Lower baseline symptom severity</li><li>Strong social support</li><li>Later age of onset (adult onset tends to be less chronic)</li></ul><h4>Worse outcomes associated with:</h4><ul><li>Early onset (childhood or adolescence)</li><li>Severe compulsions and ritual complexity</li><li>Comorbid disorders (especially major depression, tic disorders, or substance use)</li><li>Poor insight or overvalued beliefs about obsessions</li><li>High avoidance or reassurance-seeking behaviors (maintain the fear cycle)</li></ul><h4>Course pattern:</h4><ul><li>Typically chronic without treatment</li><li>Symptoms often fluctuate with stressful life events</li><li>Effective treatment (ERP + SSRIs) produces substantial improvement in ~69–75% of patients.</li></ul><h3>Differential Diagnosis</h3><ul><li>OCD risk emphasizes harm responsibility and threat misinterpretation.</li><li><strong>vs. BDD:</strong> BDD obsessions are restricted to perceived appearance defects; OCD obsessions involve multiple domains (contamination, harm, morality, symmetry, religion).</li><li><strong>vs. Hoarding Disorder:</strong> OCD hoarding occurs due to specific obsessional fears (e.g., losing something important or causing harm); hoarding disorder involves persistent difficulty discarding possessions and emotional attachment to items, independent of specific obsessions.</li><li><strong>vs. GAD:</strong> GAD involves excessive worry across many real-life domains; OCD involves intrusive, irrational obsessions and compulsive rituals performed to reduce distress.</li><li><strong>vs. OCPD:</strong> OCD symptoms are ego-dystonic (experienced as intrusive and unwanted); OCPD involves ego-syntonic perfectionism, rigidity, and control without intrusive obsessions or compulsive rituals.</li><li><strong>vs. Autism Spectrum Disorder (ASD):</strong> ASD repetitive behaviors are related to routine, sensory regulation, or restricted interests; OCD compulsions are performed to reduce anxiety triggered by intrusive obsessions.</li><li><strong>vs. Tic Disorders/Tourette’s:</strong> tics are sudden, involuntary motor or vocal behaviors not linked to obsessions; OCD compulsions are goal-directed behaviors performed to neutralize anxiety.</li><li><strong>vs. Psychotic Disorders:</strong> OCD intrusive thoughts are recognized as irrational or excessive (some insight present); psychotic delusions are fixed false beliefs without insight.</li></ul>
+      </div>
+    </article>
+    
+    <article class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="item-title-wrap">
+          <span class="item-icon">🪞</span>
+          <span>
+            <span class="item-title">Body Dysmorphic Disorder</span>
+            <span class="item-subtitle">Trauma & Stressor / OCD-Related</span>
+          </span>
+        </span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="accordion-panel">
+        <h3>DSM-5-TR Criteria</h3><ul><li>Preoccupation with ≥1 perceived defects in appearance.</li><li>Defects appear slight or unobservable to others.</li><li>Repetitive behaviors or mental acts (mirror checking, reassurance seeking, excessive grooming).</li><li>Concerns not limited to weight/body fat (otherwise eating disorder).</li></ul><h4>Additional—</h4><ul><li>Concerns occupy ~3–8 hours/day on average.</li><li>Women often focus on skin, hips, breasts, legs.</li><li>Men often focus on height, body hair, muscularity, genital size.</li></ul><h3>Epidemiology</h3><ul><li>Lifetime prevalence ~3%</li><li><strong>Gender:</strong> slightly more common in women.</li><li><strong>Age of onset:</strong> adolescence.</li><li><strong>Comorbidity:</strong> depression, anxiety disorders, substance use disorders.</li><li>~33% meet criteria for OCD.</li></ul><h3>Risk Factors / Etiology</h3><h4>Biological:</h4><ul><li><strong>Heritability:</strong> 0.40–0.50 (same as OCD).</li><li>Brain systems overlap with OCD-related disorders.</li></ul><h4>Psychological:</h4><ul><li><strong>Detail-focused visual processing:</strong> attention to small features rather than overall appearance.</li><li><strong>Cognitive bias:</strong> exaggerated importance of attractiveness for self-worth.</li></ul><h4>Social / Environmental</h4><ul><li>Appearance-related teasing or criticism, particularly in youth</li><li>Cultural emphasis on physical attractiveness.</li><li><strong>Unique feature:</strong> distorted attention to appearance details.</li></ul><h3>Evidence-Based Treatment</h3><ul><li>Psychotherapy (First-Line) - Exposure and Response Prevention (ERP) = Exposure to feared appearance situations  Prevention of reassurance behaviors (e.g., mirror checking).</li><li><strong>Medication:</strong> Same as OCD = SSRIs commonly used</li><li>Harmful / Ineffective Approaches  Cosmetic surgery typically does not reduce symptoms.</li></ul><h3>Predictors of Outcomes</h3><h4>Better outcomes associated with:</h4><ul><li>Higher insight into appearance concerns being exaggerated</li><li>Engagement in CBT with exposure and response prevention</li><li>Lower baseline symptom severity</li><li>Strong therapeutic alliance and treatment adherence</li></ul><h4>Worse outcomes associated with:</h4><ul><li>Poor insight or delusional beliefs about appearance defects</li><li>Frequent mirror checking, reassurance seeking, or camouflaging behaviors</li><li>History of appearance-related bullying or criticism</li><li>Comorbid depression, anxiety disorders, or OCD</li></ul><h4>Course pattern:</h4><ul><li>Often chronic if untreated</li><li>Symptoms frequently worsen during adolescence or early adulthood</li><li>Cosmetic procedures rarely improve symptoms and may reinforce the disorder</li></ul><h4>Important risk indicator:</h4><ul><li>Elevated suicide risk compared with many other anxiety-related disorders.</li></ul><h3>Differential Diagnosis</h3><ul><li><strong>vs. OCD:</strong> OCD obsessions involve many possible themes; BDD obsessions are restricted to perceived physical defects in appearance.</li><li><strong>vs. Eating Disorders (e.g., Anorexia Nervosa):</strong> eating disorders involve preoccupation with weight, body fat, and shape related to eating behaviors; BDD focuses on specific body features (e.g., nose, skin, hair) and concerns are not limited to weight or body fat.</li><li><strong>vs. Social Anxiety D:</strong> social anxiety involves fear of negative evaluation or embarrassment in social situations; BDD avoidance is due to belief that appearance flaws are visible and judged by others.</li><li><strong>vs. Delusional Disorder (Somatic Type):</strong> BDD may involve poor insight but beliefs can fluctuate; delusional disorder involves fixed, unshakeable belief about a bodily defect.</li><li><strong>vs. Normal Appearance Concerns:</strong> normal dissatisfaction with appearance does not cause hours of preoccupation or significant impairment; BDD involves persistent preoccupation and repetitive behaviors such as mirror checking.</li><li><strong>vs. MDD:</strong> depressive rumination may include negative body image; BDD involves specific obsessive preoccupation with perceived defects and repetitive appearance-checking behaviors.</li></ul>
+      </div>
+    </article>
+    
+    <article class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="item-title-wrap">
+          <span class="item-icon">📦</span>
+          <span>
+            <span class="item-title">Hoarding Disorder</span>
+            <span class="item-subtitle">Trauma & Stressor / OCD-Related</span>
+          </span>
+        </span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="accordion-panel">
+        <h3>DSM-5-TR Criteria</h3><ul><li>Persistent difficulty discarding possessions regardless of value.</li><li>Perceived need to save items.</li><li>Distress associated with discarding.</li><li>Accumulation clutters living spaces and interferes with intended use.</li></ul><h4>Additional—</h4><ul><li>Excessive acquiring behaviors.</li><li>Strong emotional attachment to possessions.</li><li>Many individuals lack insight into severity.</li></ul><h3>Epidemiology</h3><ul><li>Lifetime prevalence ~1.5% -- rougher estimate due to insight</li><li><strong>Gender:</strong> roughly equal.</li><li><strong>Age of onset:</strong> childhood or early adolescence; worsens with age.</li><li><strong>Comorbidity:</strong> depression, anxiety disorders, substance use disorders.</li><li><strong>Overlap:</strong> ~25% meet criteria for OCD.</li></ul><h3>Risk Factors / Etiology</h3><h4>Biological:</h4><ul><li><strong>Heritability:</strong> 0.40–0.50 (same as OCD and BDD).</li><li>Brain regions overlapping with OCD-related disorders.</li></ul><h4>Psychological:</h4><ul><li>Cognitive deficits:</li><li>poor organization</li><li>difficulty categorizing items</li><li>difficulty making decisions about possessions.</li><li><strong>Beliefs about possessions:</strong> objects may have future value or emotional meaning.</li></ul><h4>Social / Environmental:</h4><ul><li>Reinforcement of saving behaviors.</li><li>Cultural beliefs about waste and resource preservation.</li><li><strong>Unique feature:</strong> emotional attachment to objects and decision-making deficits.</li></ul><h3>Evidence-Based Treatment</h3><ul><li>Psychotherapy (First-Line) – Modified Exposure and Response Prevention:</li><li>Exposure to discarding possessions.</li><li>Prevention of hoarding rituals.</li><li>Includes motivational interviewing and organizational training.</li><li>Often includes in-home decluttering sessions.</li><li><strong>Medication:</strong> Same medication classes as OCD (SSRIs), though less evidence of effectiveness.</li><li>Harmful / Ineffective Approaches  Forced clean-outs without therapy → often relapse.</li></ul><h3>Predictors of Outcomes</h3><h4>Better outcomes associated with:</h4><ul><li>Greater insight into the severity of clutter</li><li>Motivation to change and willingness to discard possessions</li><li>Participation in specialized hoarding-focused CBT (including in-home interventions)</li><li>Strong social or family support</li></ul><h4>Worse outcomes associated with:</h4><ul><li>Poor insight or denial about hoarding severity</li><li>Strong emotional attachment to possessions</li><li>Severe clutter that significantly limits living space</li><li>Comorbid depression or anxiety disorders</li></ul><h4>Course pattern:</h4><ul><li>Typically chronic and progressively worsening over time</li><li>Often begins in childhood or adolescence, but impairment becomes severe in adulthood</li><li>Symptoms frequently worsen with major life stressors or trauma</li></ul><h4>Treatment response pattern:</h4><ul><li>Hoarding disorder tends to show weaker response to medication compared with OCD</li><li>Improvement usually requires long-term behavioral intervention and environmental change.</li></ul><h3>Differential Diagnosis</h3><ul><li><strong>vs. OCD:</strong> OCD hoarding is driven by specific obsessions (e.g., fear of losing important information or contamination); hoarding disorder involves difficulty discarding possessions due to emotional attachment or perceived usefulness, not obsessional fear.</li><li><strong>vs. Major Neurocognitive Disorder (Dementia):</strong> clutter in dementia arises from memory impairment and executive dysfunction; hoarding disorder involves intentional saving behaviors and distress when discarding items.</li><li><strong>vs. MDD:</strong> clutter may accumulate due to low motivation or neglect in depression; hoarding disorder involves active acquisition and distress about discarding possessions.</li><li><strong>vs. Normal Collecting Behavior:</strong> collectors organize and display items systematically; hoarding disorder results in disorganized accumulation that compromises living spaces.</li><li><strong>vs. Psychotic Disorders:</strong> hoarding due to psychosis may be driven by delusional beliefs about objects; hoarding disorder involves attachment and perceived usefulness rather than delusions.</li></ul>
+      </div>
+    </article>
+    
+    <article class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="item-title-wrap">
+          <span class="item-icon">⚠️</span>
+          <span>
+            <span class="item-title">Post-Traumatic-Stress Disorder</span>
+            <span class="item-subtitle">Trauma & Stressor / OCD-Related</span>
+          </span>
+        </span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="accordion-panel">
+        <h3>DSM-5-TR Criteria</h3><ul><li>Exposure to actual or threatened death, serious injury, or sexual violence (directly, witnessing, learning about it happening to close others, or repeated exposure to traumatic details).</li></ul><h4>Symptoms from four clusters:</h4><ul><li><strong>Intrusion (≥1):</strong> intrusive memories, nightmares, flashbacks, distress to trauma cues</li><li><strong>Avoidance (≥1):</strong> avoiding trauma-related thoughts, feelings, or reminders</li><li><strong>Negative cognition/mood (≥2):</strong> negative beliefs, guilt or shame, detachment, reduced interest in activities</li><li><strong>Arousal/reactivity (≥2):</strong> hypervigilance, exaggerated startle, irritability, sleep or concentration problems</li><li>Symptoms last &gt;1 month, cause distress or impairment, and are not due to substances or medical conditions.</li></ul><h3>Epidemiology</h3><ul><li>About 2/3 report at least one lifetime trauma</li><li><strong>Lifetime prevalence:</strong> ~3–6%</li><li>3.9% in general population; 5.6% of those exposed to trauma</li><li>Women ≈ 1.5-2× more likely than men</li><li>About 2/3 meet criteria for an anxiety disorder by age 21;</li><li>93% meet criteria for another disorder before onset; depression, anxiety, SUD, personality</li></ul><h3>Risk Factors – Biological</h3><ul><li>Shared genetic vulnerability with anxiety disorders</li><li>Hyperactive amygdala → heightened fear responses</li><li>Reduced medial prefrontal cortex activity → impaired fear regulation</li><li>Reduced hippocampal functioning → difficulty placing threat memories in context)</li><li>Genetic vulnerability to stress sensitivity</li><li>Stress hormone (HPA axis) dysregulation</li></ul><h3>Risk Factors — Psychological</h3><ul><li><strong>Learning:</strong> Mowrer’s two-factor model – operant  classical conditioning (avoidance = negative reinforcement)</li><li>High anxiety sensitivity or neuroticism</li><li>Poor emotion regulation or coping skills</li><li>Cognitive biases such as self-blame and catastrophic interpretation of trauma</li></ul><h4>Trauma-Specific Factors:</h4><ul><li>Severity of trauma increases risk</li><li>Human-caused trauma (e.g., assault, war, rape) more likely to cause PTSD than natural disasters</li></ul><h3>Risk Factors — Sociocultural</h3><ul><li>prior trauma exposure</li><li>limited social support</li><li>maladaptive coping (avoidance, dissociation)</li><li>cultural context influencing trauma interpretation</li><li><strong>Risk is elevated among:</strong> refugees and individuals exposed to war or violence, individuals with prior psychiatric diagnoses, those exposed to repeated or interpersonal trauma</li></ul><h3>Empirically Supported Treatments</h3><h4>Psychotherapy (first-line)</h4><ul><li>Prolonged Exposure Therapy</li><li>typically 8–15 sessions (~90 minutes each)</li><li>repeated exposure to trauma memories and cues</li><li>goal: extinction of conditioned fear response</li><li>Cognitive Processing Therapy (CPT)</li><li>CBT-based approach</li><li>focuses on reducing guilt, shame, and distorted trauma beliefs</li><li>EMDR (Eye Movement Desensitization and Reprocessing)</li><li>trauma recall paired with guided eye movements</li><li>mechanism likely exposure-based rather than eye-movement-specific</li></ul><h4>Medication</h4><ul><li>SSRIs (FDA-approved):</li><li>– sertraline (Zoloft)</li><li>– paroxetine (Paxil)</li></ul><h4>Notes:</h4><ul><li>relapse common when medication is stopped</li><li>benzodiazepines often prescribed but not supported by evidence</li></ul><h3>Predictors of Outcome</h3><h4>Better outcomes associated with:</h4><ul><li>strong social support</li><li>effective coping strategies</li><li>higher cognitive functioning</li><li>ability to process trauma memories</li></ul><h4>Worse outcomes associated with:</h4><ul><li>repeated trauma</li><li>avoidance coping</li><li>dissociation</li><li>prior psychiatric disorders</li></ul><h3>Differential Diagnosis</h3><ul><li><strong>vs. Acute Stress Disorder:</strong> PTSD symptoms last &gt;1 month; ASD occurs 3 days–1 month after trauma.</li><li><strong>vs. Adjustment Disorder:</strong> adjustment disorder occurs after stressful life events not involving severe trauma (threat of death, injury, or sexual violence).</li><li><strong>vs. Major Depressive Disorder:</strong> MDD involves persistent low mood and anhedonia; PTSD includes trauma-specific re-experiencing, avoidance, and hyperarousal.</li><li><strong>vs. Panic Disorder:</strong> panic attacks in panic disorder are unexpected; PTSD panic occurs when exposed to trauma reminders.</li><li><strong>vs. Dissociative Disorders:</strong> dissociation may occur in PTSD, but PTSD also includes intrusion and hyperarousal symptoms linked to trauma.</li><li><strong>vs. Traumatic Brain Injury:</strong> TBI may produce cognitive and emotional symptoms similar to PTSD, but does not involve trauma-related intrusion and avoidance patterns.</li><li><strong>vs. Psychotic Disorders:</strong> PTSD flashbacks involve trauma-related memories and triggers; psychotic hallucinations or delusions are not tied to trauma reminders.</li></ul>
+      </div>
+    </article>
+    
+    <article class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="item-title-wrap">
+          <span class="item-icon">⏱️</span>
+          <span>
+            <span class="item-title">Acute Stress Disorder</span>
+            <span class="item-subtitle">Trauma & Stressor / OCD-Related</span>
+          </span>
+        </span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="accordion-panel">
+        <h3>DSM-5-TR Criteria</h3><ul><li>Exposure to actual or threatened death, serious injury, or sexual violence (same trauma requirement as PTSD).</li><li>Symptoms similar to PTSD but include broader symptom categories and do not need to fall into specific clusters.</li></ul><h4>Common symptoms include:</h4><ul><li>intrusive memories or flashbacks</li><li>dissociation (e.g., feeling detached or unreal)</li><li>avoidance of trauma reminders</li><li>anxiety and hyperarousal</li></ul><h4>Diagnostic requirements:</h4><ul><li>≥9 symptoms across categories</li><li>Duration: 3 days to 1 month after trauma</li><li>significant distress or impairment</li></ul><h3>Epidemiology</h3><ul><li>symptoms common immediately after trauma</li><li>~90% of women report significant symptoms within 1 month after rape</li><li>less than half of ASD cases develop PTSD within 2 years</li></ul><h3>Etiology / Risk Factors</h3><h4>Biological</h4><ul><li>Same vulnerability factors as PTSD:</li><li>genetic risk for anxiety</li><li>heightened amygdala reactivity</li><li>stress-response dysregulation</li></ul><h4>Psychological</h4><ul><li>dissociation during trauma</li><li>avoidance coping</li><li>difficulty processing traumatic memories</li></ul><h4>Sociocultural</h4><ul><li>Same as PTSD:</li><li>trauma severity</li><li>interpersonal violence</li><li>limited social support</li></ul><h3>Empirically Supported Treatments</h3><ul><li>Brief CBT after trauma</li><li>can reduce likelihood of developing PTSD</li><li>focuses on trauma processing and coping skills</li><li>Exposure-based interventions</li><li>similar mechanisms to PTSD treatments</li><li>Medication is not primary treatment.</li></ul><h3>Predictors of Outcome</h3><h4>Higher PTSD risk when:</h4><ul><li>trauma is severe or interpersonal</li><li>strong avoidance coping is present</li><li>dissociation occurs during trauma</li></ul><h4>Protective factors:</h4><ul><li>social support</li><li>adaptive coping strategies</li><li>ability to process trauma memories</li></ul><h3>Differential Diagnosis</h3><ul><li><strong>vs. PTSD:</strong> ASD duration 3 days–1 month; PTSD &gt;1 month.</li><li><strong>vs. Adjustment Disorder:</strong> adjustment disorder follows stressful life events without extreme trauma exposure.</li><li><strong>vs. Normal Acute Stress Reaction:</strong> temporary distress after trauma is common; ASD requires ≥9 symptoms and functional impairment.</li><li><strong>vs. Dissociative Disorders:</strong> dissociation may occur in ASD but symptoms also include intrusion, avoidance, and hyperarousal tied to trauma.</li><li><strong>vs. Panic Disorder:</strong> panic attacks in ASD are trauma-triggered; panic disorder attacks are unexpected and recurrent.</li></ul>
+      </div>
+    </article>
+    
+    <article class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="item-title-wrap">
+          <span class="item-icon">🧩</span>
+          <span>
+            <span class="item-title">Schizophrenia</span>
+            <span class="item-subtitle">Schizophrenia Spectrum</span>
+          </span>
+        </span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="accordion-panel">
+        <h3>DSM-5-TR Criteria</h3><ul><li>For a diagnosis of schizophrenia, a person must have ≥2 symptoms, and one must be delusions, hallucinations, or disorganized speech:</li><li>delusions</li><li>hallucinations</li><li>disorganized speech</li><li>disorganized (or catatonic) behavior</li><li>negative symptoms (diminished motivation or emotional expression)</li></ul><h4>Additional requirements:</h4><ul><li>Active symptoms ≥1 month</li><li>Continuous disturbance for ≥6 months</li><li>Clinically significant impairment in functioning (work, relationships, self-care)</li></ul><h3>Clinical Description</h3><ul><li>Symptoms are typically grouped into three categories:</li></ul><h4>Positive symptoms</h4><ul><li>Excesses or distortions of normal functioning</li><li>delusions (false beliefs held despite contradictory evidence)</li><li>hallucinations (perceptions without external stimuli, often auditory)</li></ul><h4>Negative symptoms</h4><ul><li>Deficits in normal functioning</li><li>avolition – lack of motivation</li><li>asociality – reduced interest in social interaction</li><li>anhedonia – reduced ability to experience pleasure</li><li>blunted affect – reduced emotional expression</li><li>alogia – poverty of speech</li></ul><h4>Disorganized symptoms</h4><ul><li>disorganized speech (loose associations, derailment)</li><li>disorganized behavior</li><li>cognitive impairment in attention and executive functioning</li></ul><h3>Epidemiology</h3><ul><li>Lifetime prevalence ≈ 1%</li><li>Gender: slightly more common in men</li><li>Typical onset: late adolescence or early adulthood</li><li>Onset occurs earlier in men than women</li><li>Course:</li><li>usually involves repeated acute episodes with residual symptoms between episodes</li><li>Other important statistics:</li><li>people with schizophrenia are 12× more likely to die by suicide than the general population</li></ul><h3>Risk Factors – Biological</h3><ul><li>Heritability ≈ .77–.81</li></ul><h4>Brain structure and function</h4><ul><li>reduced hippocampal volume</li><li>smaller volumes in amygdala, thalamus, and basal ganglia</li></ul><h4>Brain connectivity</h4><ul><li>reduced connectivity between brain networks</li><li>reduced frontoparietal and default-mode network connectivity</li><li>associated with cognitive impairment and negative symptoms</li></ul><h4>Dopamine theory - DISMISSED</h4><h3>Risk Factors — Psychological</h3><ul><li>cognitive deficits in attention, memory, and executive functioning</li><li>abnormal interpretation of internal experiences leading to delusions or hallucinations</li><li>Cognitive-behavioral models suggest:</li><li>individuals may attempt to interpret unusual perceptual experiences, leading to delusional belief systems</li></ul><h3>Risk Factors — Sociocultural</h3><ul><li>Early developmental risk factors include:</li><li>obstetrical complications during pregnancy or birth</li><li>maternal infections during pregnancy</li><li>prenatal stress exposure</li><li>Example risk factor:</li><li>maternal exposure to Toxoplasma gondii associated with ~2.5× increased risk of schizophrenia in offspring</li><li>Environmental influences interact with genetic vulnerability.</li></ul><h3>Empirically Supported Treatments</h3><h4>Medication (first-line)</h4><ul><li>Antipsychotic medications</li></ul><h4>Two major classes:</h4><ul><li>first-generation antipsychotics (e.g., haloperidol)</li><li>second-generation antipsychotics (e.g., clozapine, olanzapine)</li><li>Medications primarily reduce positive symptoms.</li></ul><h4>Psychotherapy</h4><ul><li>Cognitive Behavioral Therapy (CBT)</li><li>helps patients evaluate delusional beliefs</li><li>reduces symptom severity and distress</li><li>produces small to moderate improvements across symptoms and functioning</li><li>Cognitive Behavioral Social Skills Training (CBSST)</li><li>combines CBT and social skills training</li><li>typically lasts 6–9 months</li><li>Comprehensive early intervention programs (e.g., NAVIGATE)</li><li>combine medication, therapy, family support, and vocational help</li></ul><h3>Predictors of Outcome</h3><h4>Better outcomes associated with:</h4><ul><li>earlier treatment after psychosis onset</li><li>strong social support</li><li>adherence to medication and therapy</li><li>participation in comprehensive treatment programs</li></ul><h4>Worse outcomes associated with:</h4><ul><li>longer duration of untreated psychosis</li><li>severe negative symptoms</li><li>cognitive impairment</li><li>repeated episodes</li></ul><h3>Differential Diagnosis</h3><ul><li><strong>vs. Schizophreniform Disorder:</strong> </li><li>schizophreniform symptoms last 1–6 months; schizophrenia requires ≥6 months total disturbance.</li><li><strong>vs. Brief Psychotic Disorder:</strong> </li><li>psychotic symptoms last 1 day to &lt;1 month and full recovery occurs.</li><li><strong>vs. Schizoaffective Disorder:</strong> </li><li>requires major mood episode (depression or mania) occurring with psychotic symptoms.</li><li><strong>vs. Delusional Disorder:</strong> </li><li>delusions present but hallucinations, disorganized speech, and negative symptoms are absent or minimal.</li><li><strong>vs. Bipolar Disorder with Psychotic Features:</strong> </li><li>psychotic symptoms occur only during mood episodes.</li><li><strong>vs. Major Depressive Disorder with Psychotic Features:</strong> </li><li>psychotic symptoms occur only during depressive episodes.</li><li><strong>vs. Substance-Induced Psychotic Disorder:</strong> </li><li>psychosis caused by drug intoxication, withdrawal, or medication effects.</li><li><strong>vs. Autism Spectrum Disorder:</strong> </li><li>ASD involves lifelong social communication differences; schizophrenia involves new onset psychotic symptoms such as delusions and hallucinations.</li><li>Other Schizophrenia Spectrum Disorders</li></ul>
+      </div>
+    </article>
+    
+    <article class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="item-title-wrap">
+          <span class="item-icon">🔹</span>
+          <span>
+            <span class="item-title">Schizophreniform Disorder</span>
+            <span class="item-subtitle">Schizophrenia Spectrum</span>
+          </span>
+        </span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="accordion-panel">
+        <h3>DSM-5-TR Criteria</h3><ul><li>Same symptom criteria as schizophrenia:</li><li>≥2 symptoms, including one of:</li><li>delusions</li><li>hallucinations</li><li>disorganized speech</li><li>Duration:</li><li>≥1 month but &lt;6 months</li><li>Functional impairment not required.</li></ul><h3>Epidemiology</h3><ul><li>Less common than schizophrenia</li><li>Often diagnosed early in illness course</li></ul><h3>Etiology</h3><ul><li>Same biological and environmental risk factors as schizophrenia</li></ul><h3>Treatment</h3><ul><li>Antipsychotic medications</li><li>early intervention and CBT for psychosis</li></ul><h3>Differential Diagnosis</h3><ul><li><strong>vs. Brief Psychotic Disorder:</strong> &lt;1 month duration.</li><li><strong>vs. Schizophrenia:</strong> ≥6 months total disturbance.</li><li><strong>vs. Schizoaffective Disorder:</strong> includes major mood episodes.</li></ul>
+      </div>
+    </article>
+    
+    <article class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="item-title-wrap">
+          <span class="item-icon">⚡</span>
+          <span>
+            <span class="item-title">Brief Psychotic Disorder</span>
+            <span class="item-subtitle">Schizophrenia Spectrum</span>
+          </span>
+        </span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="accordion-panel">
+        <h3>DSM-5-TR Criteria</h3><ul><li>Presence of ≥1 psychotic symptom:</li><li>delusions</li><li>hallucinations</li><li>disorganized speech</li><li>grossly disorganized or catatonic behavior</li><li>At least one must be delusions, hallucinations, or disorganized speech.</li><li>Duration:</li><li>≥1 day but &lt;1 month</li><li>full return to premorbid functioning</li></ul><h3>Epidemiology</h3><ul><li>Rare disorder</li><li>Often occurs following severe stress or trauma</li></ul><h3>Etiology</h3><ul><li>Severe psychosocial stressors</li><li>Genetic vulnerability to psychosis</li></ul><h3>Treatment</h3><ul><li>short-term antipsychotic medication</li><li>supportive psychotherapy</li></ul><h3>Differential Diagnosis</h3><ul><li><strong>vs. Schizophreniform Disorder:</strong> duration 1–6 months.</li><li><strong>vs. Schizophrenia:</strong> total disturbance ≥6 months.</li><li><strong>vs. Mood Disorders with Psychotic Features:</strong> psychosis occurs only during mood episodes.</li></ul>
+      </div>
+    </article>
+    
+    <article class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="item-title-wrap">
+          <span class="item-icon">🌗</span>
+          <span>
+            <span class="item-title">Schizoaffective disorder</span>
+            <span class="item-subtitle">Schizophrenia Spectrum</span>
+          </span>
+        </span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="accordion-panel">
+        <h3>DSM-5-TR Criteria</h3><ul><li>Combination of psychotic symptoms and mood episodes.</li></ul><h4>Key requirement:</h4><ul><li>≥2 weeks of psychotic symptoms without mood symptoms</li></ul><h4>Specifier types:</h4><ul><li>bipolar type (mania present)</li><li>depressive type (major depression only)</li></ul><h3>Epidemiology</h3><ul><li>Less common than schizophrenia</li></ul><h3>Etiology</h3><ul><li>Combination of risk factors for schizophrenia and mood disorders</li></ul><h3>Treatment</h3><ul><li>Antipsychotics</li><li>mood stabilizers or antidepressants</li><li>psychotherapy</li></ul><h3>Differential Diagnosis</h3><ul><li><strong>vs. Schizophrenia:</strong> mood episodes not central in schizophrenia.</li><li><strong>vs. Bipolar Disorder with Psychotic Features:</strong> psychosis occurs only during mood episodes.</li><li><strong>vs. Major Depressive Disorder with Psychotic Features:</strong> psychosis occurs only during depressive episodes.</li></ul>
+      </div>
+    </article>
+    
+    <article class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false">
+        <span class="item-title-wrap">
+          <span class="item-icon">🎯</span>
+          <span>
+            <span class="item-title">Delusional Disorder</span>
+            <span class="item-subtitle">Schizophrenia Spectrum</span>
+          </span>
+        </span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="accordion-panel">
+        <h3>DSM-5-TR Criteria</h3><ul><li>≥1 delusion lasting ≥1 month</li><li>Additional features:</li><li>Criterion A for schizophrenia not met</li><li>functioning relatively preserved</li><li>behavior not obviously bizarre</li></ul><h3>Epidemiology</h3><ul><li>Rare disorder</li><li>onset usually middle adulthood</li></ul><h3>Etiology</h3><ul><li>genetic vulnerability to psychosis</li><li>cognitive biases (e.g., jumping to conclusions)</li></ul><h3>Treatment</h3><ul><li>antipsychotic medication</li><li>CBT targeting delusional beliefs</li></ul><h3>Differential Diagnosis</h3><ul><li><strong>vs. Schizophrenia:</strong> schizophrenia includes hallucinations, disorganized speech, negative symptoms, and impairment.</li><li><strong>vs. OCD:</strong> OCD beliefs usually recognized as irrational; delusions are fixed false beliefs.</li><li><strong>vs. Paranoid Personality Disorder:</strong> PPD involves suspiciousness without fixed delusions.</li></ul>
+      </div>
+    </article>
+    
+      </div>
+
+      <p class="footer-note">
+        Built from the attached PSYCH 130 Exam 3 notes and styled to closely match the linked study page's tabbed reference layout.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const items = Array.from(document.querySelectorAll('.accordion-item'));
+    items.forEach(item => {
+      const button = item.querySelector('.accordion-trigger');
+      button.addEventListener('click', () => {
+        const open = item.classList.toggle('open');
+        button.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
+
+    document.getElementById('expandAll').addEventListener('click', () => {
+      items.forEach(item => {
+        item.classList.add('open');
+        item.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'true');
+      });
+    });
+
+    document.getElementById('collapseAll').addEventListener('click', () => {
+      items.forEach(item => {
+        item.classList.remove('open');
+        item.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
+</body>
+</html>
